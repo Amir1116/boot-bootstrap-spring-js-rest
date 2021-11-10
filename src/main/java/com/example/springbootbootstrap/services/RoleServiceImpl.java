@@ -1,6 +1,7 @@
 package com.example.springbootbootstrap.services;
 
 import com.example.springbootbootstrap.dao.RoleDao;
+import com.example.springbootbootstrap.dao.RoleRepository;
 import com.example.springbootbootstrap.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,47 +9,53 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RoleServiceImpl implements RoleService{
 
-    private RoleDao roleDao;
+    private RoleRepository roleRepository;
 
     @Autowired
-    public RoleServiceImpl(RoleDao roleDao){
-        this.roleDao = roleDao;
+    public RoleServiceImpl(RoleRepository roleRepository){
+        this.roleRepository = roleRepository;
     }
 
     @Override
     @Transactional
     public void save(Role role) {
-        roleDao.save(role);
+        roleRepository.save(role);
     }
 
     @Override
     public List<Role> listRoles() {
-        return roleDao.listRoles();
+        return roleRepository.findAll();
     }
 
     @Override
     @Transactional
     public void deleteRole(int id) {
-        roleDao.deleteRole(id);
+        roleRepository.deleteById(id);
     }
 
     @Override
     public Role getRole(int id) {
-        return roleDao.getRole(id);
+        Role role = null;
+        Optional<Role> roleOptional = roleRepository.findById(id);
+        if(roleOptional.isPresent()){
+            role = roleOptional.get();
+        }
+        return role;
     }
 
     @Override
-    @Transactional
     public void updateRole(Role role) {
-        roleDao.updateRole(role);
+        roleRepository.save(role);
     }
+
 
     @Override
     public Role getRole(String name) {
-        return roleDao.getRole(name);
+        return roleRepository.findByRole(name);
     }
 }

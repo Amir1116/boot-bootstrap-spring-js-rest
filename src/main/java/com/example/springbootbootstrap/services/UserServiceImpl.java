@@ -1,6 +1,5 @@
 package com.example.springbootbootstrap.services;
-
-import com.example.springbootbootstrap.dao.UserDao;
+import com.example.springbootbootstrap.dao.UserRepository;
 import com.example.springbootbootstrap.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,51 +7,53 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService{
 
-    private UserDao userDao;
+    private UserRepository userRepository;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao){
-        this.userDao = userDao;
+    public UserServiceImpl(UserRepository userRepository){
+        this.userRepository = userRepository;
     }
 
     @Override
     @Transactional
     public void save(User user) {
-        userDao.save(user);
+        userRepository.save(user);
     }
 
     @Override
     public List<User> listUsers() {
-        return userDao.listUsers();
+        return userRepository.findAll();
     }
 
     @Override
     @Transactional
     public void deleteUser(int id) {
-        userDao.deleteUser(id);
+        userRepository.deleteById(id);
     }
 
     @Override
     public User getUser(int id) {
-        return userDao.getUser(id);
+        User user = null;
+        Optional<User> optional =  userRepository.findById(id);
+        if(optional.isPresent()){
+            user = optional.get();
+        }
+        return user;
     }
 
     @Override
     @Transactional
     public void updateUser( User user) {
-        userDao.updateUser(user);
+        userRepository.save(user);
     }
 
     @Override
     public User getUser(String name) {
-        return userDao.getUser(name);
-    }
-
-    public User findOne(int id){
-        return userDao.getUser(id);
+        return userRepository.findByName(name);
     }
 }

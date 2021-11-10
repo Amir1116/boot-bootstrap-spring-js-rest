@@ -7,6 +7,7 @@ import com.example.springbootbootstrap.services.UserService;
 import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -22,11 +23,13 @@ public class AdminController {
 
     private UserService userService;
     private RoleService roleService;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AdminController(UserService userService, RoleService roleService){
+    public AdminController(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder){
         this.userService = userService;
         this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/panel")
@@ -48,7 +51,7 @@ public class AdminController {
         userOut.setEmail(user.getEmail());
         userOut.setName(user.getName());
         userOut.setLastName(user.getLastName());
-        userOut.setPassword(user.getPassword());
+        userOut.setPassword(passwordEncoder.encode(user.getPassword()));
         List<Role> roleList = userOut.getRoleList();
         if ((roles.split(",")).length == 0) {
             userOut.setRoleList(roleList);
@@ -68,8 +71,10 @@ public class AdminController {
 
     @PostMapping("/new")
     public String newUserAdmin(@RequestParam("roles") String roles, @ModelAttribute("user") User user){
+        String pass = user.getPassword();
         List<Role> roleAr = Arrays.stream(roles.split(",")).map(role-> roleService.getRole(role)).collect(Collectors.toList());
         user.setRoleList(roleAr);
+        user.setPassword(passwordEncoder.encode(pass));
         userService.save(user);
             return "redirect:/admin/panel";
     }
