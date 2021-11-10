@@ -1,0 +1,60 @@
+<th:block th:fragment="newuser(id, url, mt, obj, disabled, inptId)" xmlns:form="http://www.w3.org/1999/xhtml" >
+            <form th:method = "mt" th:action="${url}"  th:id="${id}">
+                <div class="mb-3">
+                    <label th:for="${'inptId' + inptId}" class="form-label fw-bold text-center w-100">ID</label>
+                    <input type="text" class="form-control mb-3"  th:value="${obj?.getId()}"
+                           th:disabled="${true}" th:id="${'inptId' + inptId}"/>
+                </div>
+                <div class="mb-3">
+                    <label th:for="${'inptName'+ inptId}" class="form-label fw-bold text-center w-100">First
+                        Name</label>
+                    <input type="text" class="form-control mb-3"  th:value="${obj?.getName()}"
+                           th:disabled="${disabled}" th:id="${'inptName'+ inptId}" required name="name"/>
+                </div>
+                <div class="mb-3">
+                    <label th:for="${'inptLastName' + inptId}" class="form-label fw-bold text-center w-100">Last
+                        Name</label>
+                    <input name="lastName" type="text" class="form-control" th:value="${obj?.getLastName()}"
+                           th:disabled="${disabled}" th:id="${'inptLastName' + inptId}"  required/>
+                </div>
+                <div class="mb-3">
+                    <label class="form-check-label fw-bold text-center w-100" th:for="${'inptAge' + inptId}">Age</label>
+                    <input name="age" type="number" class="form-control" th:value="${obj?.getAge()}"
+                    th:disabled="${disabled}" th:id="${'inptAge' + inptId}" required/>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-check-label fw-bold text-center w-100"
+                           th:for="${'inptUsername' + inptId}">username
+                    </label>
+                    <input name="username" type="text" class="form-control"  th:value="${obj?.getUsername()}"
+                           th:disabled="${disabled}" th:id="${'inptUsername' + inptId}" required/>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-check-label fw-bold text-center w-100" th:for="${'inptEmail'+inptId}">Email
+                    </label>
+                    <input name="email" type="text" class="form-control"  th:value="${obj?.getEmail()}"
+                           th:disabled="${disabled}" th:id="${'inptEmail'+inptId}" required/>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-check-label fw-bold text-center w-100" th:for="${'inptPassword'+inptId}">Password
+                    </label>
+                    <input name="password" type="password" class="form-control" th:disabled="${disabled}"
+                           th:id="${'inptPassword'+inptId}" required/>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-check-label fw-bold text-center w-100" th:for="${'role' + inptId}">Role</label>
+                    <select th:id="${'role' + inptId}" name ="roles" multiple th:disabled="${disabled}"
+                            class="form-select"
+                            required aria-label="multiple select example">
+                        <option  value="ADMIN">ADMIN</option>
+                        <option  value="USER">USER</option>
+                    </select>
+                </div>
+
+            </form>
+
+</th:block>

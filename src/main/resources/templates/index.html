@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+ <h1>Main Page</h1>
+    <a th:href="@{'/user/content'}">user content</a>
+
+ <form th:action="@{/logout}" method="post" style="margin-right: 3rem">
+     <button type="submit" style="padding: 0.5rem 1rem;
+                                           background-color: #EED6C4;
+                                           color: #483434;
+                                           border-radius: .5rem;
+      ">LOGOUT</button>
+     <a href="/user">user</a>
+ </form>
+</body>
+</html>

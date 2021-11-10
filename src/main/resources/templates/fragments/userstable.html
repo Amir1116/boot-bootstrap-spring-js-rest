@@ -1,0 +1,83 @@
+
+<th:block th:fragment="usertable" th:object="${userList}">
+    <div class="card me-3" >
+        <div class="card-header">
+            All Users
+        </div>
+        <div class="border border-light p-2">
+            <table class="table caption-top  border-2 bg-white table-hover" id="utable" >
+                <thead class="">
+                <tr>
+                    <th>ID</th>
+                    <th>FirstName</th>
+                    <th>LastName</th>
+                    <th>Age</th>
+                    <th>Email</th>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="user2, userlist: ${userList}" >
+                    <tr>
+                        <td th:text="${user2.getId()}"></td>
+                        <td th:text="${user2.getName()}"></td>
+                        <td th:text="${user2.getLastName()}"></td>
+                        <td th:text="${user2.getAge()}"></td>
+                        <td th:text="${user2.getEmail()}"></td>
+                        <td th:text="${user2.getUsername()}"></td>
+                        <td>
+                            <p th:each="role:${user2.getRoleList()}">
+                                <span th:text="${role.getRole()} "></span>
+                            </p>
+                        </td>
+                        <td >
+                            <a th:href="@{'/users/user/'+${user2.getId()}}" th:class="${'btn btn-success btnedit'}"
+                               data-bs-toggle="modal"
+                               data-bs-target="#edit" >Edit
+                            </a>
+                        </td>
+                        <td >
+                            <a th:href="@{'/users/user/'+${user2.getId()}}"
+                               th:class="${'btn btn-danger btndelete'}"
+                               type="button" class="btn btn-danger" data-bs-toggle="modal"
+                               data-bs-target="#delete" >Delete
+                            </a>
+                        </td>
+                    </tr>
+                </th:block>
+                </tbody>
+                <tfoot>
+
+                </tfoot>
+            </table>
+            <div th:replace="/fragments/modal::modal(title = 'Edit User',
+                                                    id2='edit',
+                                                    idform = 'formedit',
+                                                    url2=@{'/admin/edit'},
+                                                    mt2='PATCH',
+                                                    obj2=${user2},
+                                                    btnClass = 'btn btn-success modalEditBtn',
+                                                    btnText = 'Edit',
+                                                    disabled2 = ${false},
+                                                    inptId2 = 'edit'
+                                                    )"></div>
+
+            <div th:replace="/fragments/modal::modal(title = 'Delete User',
+                                                    id2= 'delete',
+                                                    idform = 'formdelete',
+                                                    url2=@{'/admin/delete/'},
+                                                    mt2 = 'DELETE',
+                                                    obj2=${user2},
+                                                    btnClass ='btn btn-danger',
+                                                    btnText = 'Delete',
+                                                    disabled2 = ${true},
+                                                    inptId2 = 'delete'
+                                                    )"></div>
+
+        </div>
+    </div>
+</th:block>
+

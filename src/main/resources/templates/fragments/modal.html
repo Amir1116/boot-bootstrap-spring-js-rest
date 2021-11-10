@@ -1,0 +1,21 @@
+<th:block th:fragment="modal(title, id2, idform, url2, mt2 , obj2, btnClass, btnText, disabled2 , inptId2)"
+          th:object="${md}">
+    <div class="modal p-5" tabindex="-1" th:id="${id2}">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="${title}"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="width: 50%; margin:auto;">
+                    <div th:insert="/fragments/newuserfragment::newuser(id = ${idform}, url = ${url2},
+                            mt = ${mt2}, obj = ${obj2}, disabled = ${disabled2}, inptId = ${inptId2})" ></div>
+                    </div>
+                <div class="modal-footer" >
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <input type="submit" th:class="${btnClass}" th:form="${idform}" th:value="${btnText}" />
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
