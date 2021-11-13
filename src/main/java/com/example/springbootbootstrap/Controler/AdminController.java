@@ -22,61 +22,17 @@ import java.util.stream.Collectors;
 public class AdminController {
 
     private UserService userService;
-    private RoleService roleService;
-    private PasswordEncoder passwordEncoder;
+
 
     @Autowired
-    public AdminController(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder){
+    public AdminController(UserService userService){
         this.userService = userService;
-        this.roleService = roleService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/panel")
     public String adminPanel(Authentication authentication, ModelMap model){
         User user = userService.getUser(authentication.getName());
-        List<User> userList = userService.listUsers();
-        User newUser = new User();
-        model.addAttribute("userList",userList);
         model.addAttribute("admin",user);
-        model.addAttribute("newuser", newUser);
         return "adminpanel";
     }
-
-    @RequestMapping("/edit/{id}")
-    public String update(@PathVariable("id") int id,@RequestParam("roles") String roles, @ModelAttribute("user") User user){
-        System.out.println(roles);
-        User userOut = userService.getUser(id);
-        userOut.setUsername(user.getUsername());
-        userOut.setEmail(user.getEmail());
-        userOut.setName(user.getName());
-        userOut.setLastName(user.getLastName());
-        userOut.setPassword(passwordEncoder.encode(user.getPassword()));
-        List<Role> roleList = userOut.getRoleList();
-        if ((roles.split(",")).length == 0) {
-            userOut.setRoleList(roleList);
-        } else {
-            List<Role> roleAr = Arrays.stream(roles.split(",")).map(role -> roleService.getRole(role)).collect(Collectors.toList());
-            userOut.setRoleList(roleAr);
-        }
-        userService.updateUser(userOut);
-        return "redirect:/admin/panel";
-    }
-
-    @RequestMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id")int id){
-        userService.deleteUser(id);
-        return "redirect:/admin/panel";
-    }
-
-    @PostMapping("/new")
-    public String newUserAdmin(@RequestParam("roles") String roles, @ModelAttribute("user") User user){
-        String pass = user.getPassword();
-        List<Role> roleAr = Arrays.stream(roles.split(",")).map(role-> roleService.getRole(role)).collect(Collectors.toList());
-        user.setRoleList(roleAr);
-        user.setPassword(passwordEncoder.encode(pass));
-        userService.save(user);
-            return "redirect:/admin/panel";
-    }
-
 }

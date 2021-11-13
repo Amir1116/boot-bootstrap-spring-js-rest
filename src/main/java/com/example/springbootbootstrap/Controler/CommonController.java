@@ -17,7 +17,7 @@ public class CommonController {
 
     @PostMapping("/login")
     public String loginIn(){
-        return "redirect:/admin/allusers";
+        return "redirect:/admin/panel";
     }
 
     @RequestMapping("/logout")

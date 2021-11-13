@@ -49,12 +49,10 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/").anonymous()
-                .antMatchers("/users/**").hasAnyAuthority("ADMIN", "USER")
-                .antMatchers("/user/**").hasAnyAuthority("ADMIN","USER")
-                .antMatchers("/admin/**").hasAuthority("ADMIN")
-                .and()
+          http.csrf().disable()
+                .authorizeRequests().anyRequest().authenticated()
+                .and().httpBasic()
+                .and().sessionManagement().disable()
                 .formLogin()
                 .loginPage("/login")
                 .failureUrl("/login")
