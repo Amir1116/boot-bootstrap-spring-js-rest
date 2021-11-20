@@ -24,7 +24,7 @@ public class UserController {
     public String userPage(Authentication authentication, ModelMap model){
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String currentUserName = authentication.getName();
-            User user = userService.getUser(currentUserName);
+            User user = userService.findByName(currentUserName);
             User newUser = new User();
             model.addAttribute("user",user);
         }

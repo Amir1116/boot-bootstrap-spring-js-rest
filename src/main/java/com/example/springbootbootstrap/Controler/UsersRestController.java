@@ -5,6 +5,8 @@ import com.example.springbootbootstrap.model.User;
 import com.example.springbootbootstrap.services.RoleService;
 import com.example.springbootbootstrap.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +22,7 @@ public class UsersRestController {
 
 
     @Autowired
-    public UsersRestController(UserService userService, RoleService roleService,PasswordEncoder passwordEncoder){
+    public UsersRestController(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
@@ -28,35 +30,38 @@ public class UsersRestController {
 
 
     @GetMapping("users")
-    public List<User> allUsers(){
-        return userService.listUsers();
+    public ResponseEntity<List<User>> allUsers() {
+        List<User> listUsers = userService.listUsers();
+        return new ResponseEntity<>(listUsers, HttpStatus.OK);
     }
 
     @GetMapping("/users/{id}")
-    public User findOne(@PathVariable("id") Integer id){
-         return userService.getUser(id);
+    public ResponseEntity<User> findOne(@PathVariable("id") Integer id) {
+        User user = userService.getUser(id);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PostMapping("users")
-    public User addUser(@RequestBody User user){
+    public ResponseEntity<User> addUser(@RequestBody User user) {
         String pass = user.getPassword();
         user.setPassword(passwordEncoder.encode(pass));
         userService.save(user);
-        return user;
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PutMapping("users")
-    public List<User> putUser(@RequestBody User user){
+    public ResponseEntity<List<User>> putUser(@RequestBody User user) {
         String pass = user.getPassword();
         user.setPassword(passwordEncoder.encode(pass));
         userService.save(user);
-        return userService.listUsers();
+        List<User> listUsers = this.userService.listUsers();
+        return new ResponseEntity<>(listUsers, HttpStatus.OK);
 
     }
 
     @DeleteMapping("users/{id}")
-    public List<User> deleteUser(@PathVariable("id") int id){
+    public ResponseEntity<List<User>> deleteUser(@PathVariable("id") int id) {
         userService.deleteUser(id);
-        return userService.listUsers();
+        return new ResponseEntity<>(this.userService.listUsers(), HttpStatus.OK);
     }
 }

@@ -31,7 +31,7 @@ public class AdminController {
 
     @GetMapping("/panel")
     public String adminPanel(Authentication authentication, ModelMap model){
-        User user = userService.getUser(authentication.getName());
+        User user = userService.findByName(authentication.getName());
         model.addAttribute("admin",user);
         return "adminpanel";
     }

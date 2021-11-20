@@ -1,6 +1,6 @@
 package com.example.springbootbootstrap.services;
 
-import com.example.springbootbootstrap.dao.RoleDao;
+//import com.example.springbootbootstrap.dao.RoleDao;
 import com.example.springbootbootstrap.dao.RoleRepository;
 import com.example.springbootbootstrap.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
