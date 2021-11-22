@@ -37,7 +37,7 @@ public class User {
     @Column(name = "enabled")
     private int enabled = 1;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany()
         @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
