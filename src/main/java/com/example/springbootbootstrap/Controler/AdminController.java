@@ -4,13 +4,11 @@ import com.example.springbootbootstrap.model.Role;
 import com.example.springbootbootstrap.model.User;
 import com.example.springbootbootstrap.services.RoleService;
 import com.example.springbootbootstrap.services.UserService;
-import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,8 +18,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/admin/")
 public class AdminController {
 
-    private UserService userService;
-    private RoleService roleService;
+    private final UserService userService;
+    private final RoleService roleService;
 
     @Autowired
     public AdminController(UserService userService, RoleService roleService){
@@ -32,7 +30,7 @@ public class AdminController {
     @GetMapping("/panel")
     public String adminPanel(Authentication authentication, ModelMap model){
         User user = userService.getUser(authentication.getName());
-        List<User> userList = userService.listUsers();
+        List<User> userList = userService.getUsersList();
         User newUser = new User();
         model.addAttribute("userList",userList);
         model.addAttribute("admin",user);
@@ -42,21 +40,7 @@ public class AdminController {
 
     @RequestMapping("/edit/{id}")
     public String update(@PathVariable("id") int id,@RequestParam("roles") String roles, @ModelAttribute("user") User user){
-        System.out.println(roles);
-        User userOut = userService.getUser(id);
-        userOut.setUsername(user.getUsername());
-        userOut.setEmail(user.getEmail());
-        userOut.setName(user.getName());
-        userOut.setLastName(user.getLastName());
-        userOut.setPassword(user.getPassword());
-        List<Role> roleList = userOut.getRoleList();
-        if ((roles.split(",")).length == 0) {
-            userOut.setRoleList(roleList);
-        } else {
-            List<Role> roleAr = Arrays.stream(roles.split(",")).map(role -> roleService.getRole(role)).collect(Collectors.toList());
-            userOut.setRoleList(roleAr);
-        }
-        userService.updateUser(userOut);
+       userService.updateUser(user, roles, id);
         return "redirect:/admin/panel";
     }
 

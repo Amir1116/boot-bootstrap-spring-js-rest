@@ -17,7 +17,7 @@ public class UserDaoImpl implements UserDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserDaoImpl(PasswordEncoder passwordEncoder){
@@ -31,7 +31,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<User> listUsers() {
+    public List<User> getUsersList() {
        return entityManager.createQuery("from User", User.class).getResultList();
     }
 
@@ -53,10 +53,8 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUser(String emailin) {
-        String email = emailin;
         Query query = entityManager.createQuery("FROM User u where u.email = :email",User.class);
-        User user = (User) query.setParameter("email", emailin).getSingleResult();
-        return user;
+        return (User) query.setParameter("email", emailin).getSingleResult();
     }
 }
 

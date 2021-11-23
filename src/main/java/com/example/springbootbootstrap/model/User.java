@@ -1,7 +1,5 @@
 package com.example.springbootbootstrap.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,15 +36,16 @@ public class User {
     private int enabled = 1;
 
     @ManyToMany(fetch = FetchType.EAGER)
-        @JoinTable(name = "user_role",
+    @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private List<Role> roleList;
 
-    public User() {}
+    public User() {
+    }
 
-    public User( String email, String password, String username, String name, String lastName, int age) {
+    public User(String email, String password, String username, String name, String lastName, int age) {
 
         this.email = email;
         this.password = password;
@@ -56,14 +55,14 @@ public class User {
         this.age = age;
     }
 
-    public void setRole(Role role){
-        if(roleList == null){
+    public void setRole(Role role) {
+        if (roleList == null) {
             roleList = new ArrayList<>();
         }
         roleList.add(role);
     }
 
-    public boolean isAdmin(){
+    public boolean isAdmin() {
         return roleList.contains(new Role("ADMIN"));
     }
 
@@ -104,7 +103,7 @@ public class User {
         this.age = age;
     }
 
-    public void setAge(String age){
+    public void setAge(String age) {
         this.age = Integer.parseInt(age);
     }
 
@@ -143,7 +142,7 @@ public class User {
     }
 
 
-//============================================= @Override
+    //============================================= @Override
     @Override
     public boolean equals(Object o) {
         if (this == o) {

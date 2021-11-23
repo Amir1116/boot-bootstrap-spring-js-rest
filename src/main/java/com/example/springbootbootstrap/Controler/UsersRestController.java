@@ -17,13 +17,13 @@ import java.util.List;
 @RequestMapping("users")
 public class UsersRestController {
 
-    private UserService userService;
-    private RoleService roleService;
+    private final UserService userService;
+
 
     @Autowired
-    public UsersRestController(UserService userService, RoleService roleService){
+    public UsersRestController(UserService userService){
         this.userService = userService;
-        this.roleService = roleService;
+
     }
 
 

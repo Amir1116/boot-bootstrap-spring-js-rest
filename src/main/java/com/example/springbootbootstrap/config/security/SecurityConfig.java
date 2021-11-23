@@ -1,6 +1,6 @@
 package com.example.springbootbootstrap.config.security;
 
-import com.example.springbootbootstrap.model.Role;
+import com.example.springbootbootstrap.config.security.handler.AuthenticationSuccessHandlerImpl;
 import com.example.springbootbootstrap.services.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -14,10 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 
-
-
 @EnableWebSecurity
-public class SecurityConf extends WebSecurityConfigurerAdapter {
+public class SecurityConfig
+        extends WebSecurityConfigurerAdapter {
 
     @Bean
     public UserDetailsService userDetailsService(){
